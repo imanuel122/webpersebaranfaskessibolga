@@ -49,30 +49,31 @@ class SpatialController extends Controller
         $radius = $request->input('radius', 1000);
 
         $hasil = DB::select("
-            SELECT
-                f.id,
-                f.nama_faskes,
-                f.alamat,
-                f.kecamatan,
-                j.nama_jenis,
-                f.bpjs,
-                ROUND(
-                    ST_Distance(
-                        f.geom::geography,
-                        ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography
-                    )::numeric, 2
-                ) AS jarak_meter
-            FROM fasilitas_kesehatan f
-            LEFT JOIN jenis_fasilitas j ON j.id = f.jenis_faskes_id
-            WHERE
-                f.geom IS NOT NULL
-                AND ST_DWithin(
-                    f.geom::geography,
-                    ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography,
-                    ?
-                )
-            ORDER BY jarak_meter ASC
-        ", [$lon, $lat, $lon, $lat, $radius]);
+        SELECT
+            f.id,
+            f.nama_faskes,
+            f.alamat,
+            f.kecamatan,
+            j.nama_jenis,
+            f.bpjs,
+            ROUND(
+                ST_Distance(
+                    ST_SetSRID(ST_MakePoint(f.longitude, f.latitude), 4326)::geography,
+                    ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography
+                )::numeric, 2
+            ) AS jarak_meter
+        FROM fasilitas_kesehatan f
+        LEFT JOIN jenis_fasilitas j ON j.id = f.jenis_faskes_id
+        WHERE
+            f.latitude IS NOT NULL
+            AND f.longitude IS NOT NULL
+            AND ST_DWithin(
+                ST_SetSRID(ST_MakePoint(f.longitude, f.latitude), 4326)::geography,
+                ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography,
+                ?
+            )
+        ORDER BY jarak_meter ASC
+    ", [$lon, $lat, $lon, $lat, $radius]);
 
         return response()->json([
             'status' => 'success',
