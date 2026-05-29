@@ -17,6 +17,14 @@
             "dest": "/public/build/assets/$1"
         },
         {
+            "src": "/images/(.*)",
+            "dest": "/public/images/$1"
+        },
+        {
+            "src": "/api/spasial/(.*)",
+            "dest": "/api/index.php"
+        },
+        {
             "src": "/favicon.(.*)",
             "dest": "/public/favicon.$1"
         },
