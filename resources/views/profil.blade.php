@@ -663,7 +663,7 @@
                         'icon' => '💼',
                         'label' => 'LinkedIn',
                         'val' => 'linkedin.com/in/imanuel-reformata-hulu-12437a2a7',
-                        'href' => 'www.linkedin.com/in/imanuel-reformata-hulu-12437a2a7',
+                        'href' => 'https://www.linkedin.com/in/imanuel-reformata-hulu-12437a2a7',
                         'hint' => 'Lihat profil',
                     ],
                     [
