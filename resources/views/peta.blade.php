@@ -1057,10 +1057,10 @@
             Edit Data Faskes
         </a>
         ${p.link_googlemaps ? `
-            <a href="${p.link_googlemaps}" target="_blank"
-               class="flex items-center justify-center gap-2 w-full py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition-colors">
-                🗺 Buka Google Maps
-            </a>` : ''}`;
+                            <a href="${p.link_googlemaps}" target="_blank"
+                               class="flex items-center justify-center gap-2 w-full py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition-colors">
+                                🗺 Buka Google Maps
+                            </a>` : ''}`;
 
             document.getElementById('detail-panel').classList.add('open');
         }
@@ -1242,7 +1242,7 @@
             hasil.innerHTML = `<div class="flex justify-center py-6"><div class="spinner"></div></div>`;
             Object.values(markerMap).forEach(m => setOpacity(m, 0.15));
             try {
-                const res = await fetch(`${BASE_URL}/api/spasial/radius?lat=${lat}&lon=${lng}&radius=${radius}`);
+                const res = await fetch(`${BASE_URL}/spasial/radius?lat=${lat}&lon=${lng}&radius=${radius}`);
                 const data = await res.json();
                 const ids = new Set(data.data.map(d => d.id));
                 Object.entries(markerMap).forEach(([id, m]) => setOpacity(m, ids.has(parseInt(id)) ? 1 : 0.1));
@@ -1570,7 +1570,7 @@
 
         async function loadFaskes() {
             try {
-                const res = await fetch(`${BASE_URL}/api/spasial/geojson`);
+                const res = await fetch(`${BASE_URL}/spasial/geojson`);
                 const data = await res.json();
                 allFeatures = data.features || [];
                 buildFilters();

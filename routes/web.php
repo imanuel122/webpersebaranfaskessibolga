@@ -17,7 +17,15 @@ Route::get('/peta', [PetaController::class, 'index'])->name('peta');
 Route::resource('faskes', FaskesController::class);
 
 // ── Query Spasial (API) ──
-Route::prefix('api/spasial')->group(function () {
+// Route::prefix('api/spasial')->group(function () {
+//     Route::get('/terdekat', [SpatialController::class, 'terdekat']);
+//     Route::get('/radius', [SpatialController::class, 'dalamRadius']);
+//     Route::get('/jarak', [SpatialController::class, 'jarakDuaFaskes']);
+//     Route::get('/geojson', [SpatialController::class, 'geojson']);
+//     Route::get('/statistik-kecamatan', [SpatialController::class, 'statistikKecamatan']);
+// });
+
+Route::prefix('spasial')->group(function () {
     Route::get('/terdekat', [SpatialController::class, 'terdekat']);
     Route::get('/radius', [SpatialController::class, 'dalamRadius']);
     Route::get('/jarak', [SpatialController::class, 'jarakDuaFaskes']);
