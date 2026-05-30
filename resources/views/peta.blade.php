@@ -309,6 +309,162 @@
             white-space: nowrap;
             animation: slideIn 0.3s ease;
         }
+
+
+        /* ===== RESPONSIVE MAP LAYOUT ===== */
+        #sidebar-backdrop {
+            display: none;
+        }
+
+        .mobile-sidebar-toggle {
+            display: none;
+        }
+
+        @media (max-width: 1023px) {
+            body {
+                min-height: 100dvh;
+            }
+
+            .mobile-sidebar-toggle {
+                display: inline-flex;
+            }
+
+            #main-layout {
+                position: relative;
+            }
+
+            #sidebar-backdrop {
+                display: block;
+                position: absolute;
+                inset: 0;
+                z-index: 35;
+                background: rgba(15, 23, 42, 0.42);
+                backdrop-filter: blur(2px);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.25s ease;
+            }
+
+            #sidebar-backdrop.show {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            #sidebar-panel {
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: min(88vw, 360px) !important;
+                max-width: 360px;
+                z-index: 40;
+                transform: translateX(-105%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 16px 0 40px rgba(15, 23, 42, 0.18);
+            }
+
+            #sidebar-panel.open {
+                transform: translateX(0);
+            }
+
+            .leaflet-control-zoom {
+                margin-top: 72px !important;
+            }
+
+            #detail-panel {
+                width: min(92vw, 380px);
+                z-index: 45;
+            }
+
+            #legend-panel {
+                left: 12px;
+                bottom: 82px;
+                min-width: 180px;
+                max-width: min(220px, calc(100vw - 92px));
+            }
+
+            #legend-body.expanded {
+                max-height: 260px;
+                overflow-y: auto;
+            }
+
+            .route-badge {
+                bottom: 84px;
+                max-width: calc(100vw - 32px);
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            #mode-indicator {
+                top: 14px;
+                width: calc(100vw - 32px);
+                max-width: 360px;
+                text-align: center;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            #focus-badge {
+                top: 14px;
+                left: 12px;
+                right: 12px;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .app-navbar .brand-subtitle {
+                display: none;
+            }
+
+            .app-navbar .top-links a {
+                font-size: 0;
+                padding: 8px;
+                gap: 0;
+            }
+
+            .app-navbar .top-links a svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .app-navbar .brand-title {
+                font-size: 13px;
+            }
+
+            .leaflet-popup-content {
+                width: 220px !important;
+            }
+
+            #detail-panel {
+                width: 100%;
+            }
+
+            #legend-panel {
+                bottom: 78px;
+                left: 10px;
+                border-radius: 14px;
+            }
+
+            .leaflet-control-attribution {
+                display: none;
+            }
+        }
+
+        @media (max-width: 420px) {
+            #sidebar-panel {
+                width: 92vw !important;
+            }
+
+            #legend-panel {
+                max-width: 190px;
+            }
+
+            .route-badge {
+                font-size: 11px;
+                padding: 7px 12px;
+            }
+        }
     </style>
 </head>
 
@@ -327,11 +483,20 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm font-extrabold text-slate-800 leading-none">Faskes Sibolga</p>
-                        <p class="text-xs text-slate-400 leading-none mt-0.5">Peta Interaktif</p>
+                        <p class="brand-title text-sm font-extrabold text-slate-800 leading-none">Faskes Sibolga</p>
+                        <p class="brand-subtitle text-xs text-slate-400 leading-none mt-0.5">Peta Interaktif</p>
                     </div>
                 </a>
-                <div class="flex items-center gap-1">
+                <div class="top-links flex items-center gap-1">
+                    <button onclick="toggleSidebar()"
+                        class="mobile-sidebar-toggle px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 transition-colors items-center gap-1.5"
+                        title="Buka panel peta">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        Menu
+                    </button>
                     <a href="{{ route('homepage') }}"
                         class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -361,14 +526,27 @@
     </nav>
 
     {{-- ══ MAIN LAYOUT ══ --}}
-    <div class="flex flex-1 overflow-hidden">
+    <div id="main-layout" class="flex flex-1 overflow-hidden">
+
+        <div id="sidebar-backdrop" onclick="closeSidebar()"></div>
 
         {{-- ── SIDEBAR KIRI ── --}}
-        <aside class="relative z-20 flex flex-col bg-white shadow-xl flex-shrink-0" style="width:340px;">
+        <aside id="sidebar-panel" class="relative z-20 flex flex-col bg-white shadow-xl flex-shrink-0"
+            style="width:340px;">
 
             {{-- Sidebar header --}}
             <div class="bg-gradient-to-br from-blue-700 via-blue-600 to-teal-600 px-4 py-3 flex-shrink-0">
-                <p class="text-white font-bold text-sm mb-3">🗺 Peta Fasilitas Kesehatan</p>
+                <div class="flex items-center justify-between gap-3 mb-3">
+                    <p class="text-white font-bold text-sm">🗺 Peta Fasilitas Kesehatan</p>
+                    <button onclick="closeSidebar()"
+                        class="lg:hidden w-8 h-8 rounded-xl bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-colors"
+                        title="Tutup panel">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
                 <div class="grid grid-cols-4 gap-1 bg-white/10 rounded-xl p-1">
                     <button onclick="switchTab('peta')" id="tab-peta"
                         class="tab-btn active py-1.5 rounded-lg text-xs font-semibold text-center">🗺 Peta</button>
@@ -396,8 +574,8 @@
                 {{-- Search --}}
                 <div class="px-3 py-2.5 border-b border-slate-100 flex-shrink-0">
                     <div class="relative">
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
@@ -558,6 +736,16 @@
         {{-- ── MAP AREA ── --}}
         <div class="flex-1 relative">
             <div id="map" class="absolute inset-0 z-0"></div>
+
+            {{-- Tombol panel mobile/tablet --}}
+            <button onclick="toggleSidebar()"
+                class="mobile-sidebar-toggle absolute top-4 left-4 z-20 px-3 py-2 rounded-xl bg-white text-slate-700 shadow-lg border border-slate-100 text-xs font-bold items-center gap-2 hover:bg-blue-50 hover:text-blue-700 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                Panel
+            </button>
 
             {{-- Loading --}}
             <div id="loading"
@@ -760,6 +948,31 @@
         let routeLayer = null;
         let focusedId = null;
 
+
+        // ── RESPONSIVE SIDEBAR ──
+        function openSidebar() {
+            document.getElementById('sidebar-panel')?.classList.add('open');
+            document.getElementById('sidebar-backdrop')?.classList.add('show');
+            setTimeout(() => map.invalidateSize(), 300);
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar-panel')?.classList.remove('open');
+            document.getElementById('sidebar-backdrop')?.classList.remove('show');
+            setTimeout(() => map.invalidateSize(), 300);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar-panel');
+            if (sidebar?.classList.contains('open')) closeSidebar();
+            else openSidebar();
+        }
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) closeSidebar();
+            setTimeout(() => map.invalidateSize(), 150);
+        });
+
         // ── MAP ──
         const map = L.map('map', {
             center: CENTER,
@@ -856,6 +1069,9 @@
             document.getElementById('panel-' + tab).classList.add('active');
             document.getElementById('tab-' + tab).classList.add('active');
             nonaktifkanKlik();
+            if (window.innerWidth < 1024) {
+                setTimeout(() => map.invalidateSize(), 250);
+            }
             if (tab === 'peta') {
                 Object.values(markerMap).forEach(m => setOpacity(m, 1));
                 clearTerdekatLayers();
@@ -1057,10 +1273,10 @@
             Edit Data Faskes
         </a>
         ${p.link_googlemaps ? `
-                            <a href="${p.link_googlemaps}" target="_blank"
-                               class="flex items-center justify-center gap-2 w-full py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition-colors">
-                                🗺 Buka Google Maps
-                            </a>` : ''}`;
+                                    <a href="${p.link_googlemaps}" target="_blank"
+                                       class="flex items-center justify-center gap-2 w-full py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition-colors">
+                                        🗺 Buka Google Maps
+                                    </a>` : ''}`;
 
             document.getElementById('detail-panel').classList.add('open');
         }
@@ -1671,6 +1887,7 @@
                     });
                     highlightCard(p.id);
                     openDetail(p);
+                    if (window.innerWidth < 1024) closeSidebar();
                 };
                 const bpjs = p.bpjs ?
                     `<span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700">BPJS</span>` :
@@ -1739,6 +1956,7 @@
             document.getElementById('stat-bpjs').textContent = features.filter(f => f.properties.bpjs).length;
         }
 
+        setTimeout(() => map.invalidateSize(), 300);
         loadFaskes();
     </script>
 </body>

@@ -240,29 +240,65 @@
         .nav-link.active::after {
             transform: scaleX(1);
         }
+
+
+        /* Responsive improvements */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        img,
+        svg {
+            max-width: 100%;
+        }
+
+        @media (max-width: 640px) {
+            .blob {
+                filter: blur(55px);
+                opacity: 0.12;
+            }
+
+            pre {
+                font-size: 11px;
+                padding: 14px;
+                line-height: 1.65;
+            }
+
+            .code-header {
+                padding: 9px 12px;
+            }
+
+            .tech-pill {
+                width: 100%;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 
 <body class="bg-slate-50 text-slate-800">
 
-    {{-- ══ NAVBAR (sama persis dengan homepage) ══ --}}
-    <nav class="sticky top-0 z-[999] bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm">
+    {{-- ══ NAVBAR RESPONSIVE ══ --}}
+    <nav class="sticky top-0 z-[999] bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <a href="{{ route('homepage') }}" class="flex items-center gap-3">
+                <a href="{{ route('homepage') }}" class="flex items-center gap-3 min-w-0">
                     <div
-                        class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-teal-500 flex items-center justify-center shadow-md">
+                        class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-teal-500 flex items-center justify-center shadow-md flex-shrink-0">
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                     </div>
-                    <div>
-                        <p class="text-base font-extrabold text-slate-800 leading-none">Faskes Sibolga</p>
-                        <p class="text-xs text-slate-400 leading-none mt-0.5">Kota Sibolga, Sumatra Utara</p>
+                    <div class="min-w-0">
+                        <p class="text-sm sm:text-base font-extrabold text-slate-800 leading-none truncate">Faskes
+                            Sibolga</p>
+                        <p class="text-[10px] sm:text-xs text-slate-400 leading-none mt-0.5 truncate">Kota Sibolga,
+                            Sumatra Utara</p>
                     </div>
                 </a>
-                <div class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+
+                <div class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600">
                     <a href="{{ route('homepage') }}" class="nav-link hover:text-blue-600 transition-colors">Beranda</a>
                     <a href="{{ route('peta') }}" class="nav-link hover:text-blue-600 transition-colors">Peta</a>
                     <a href="{{ route('faskes.index') }}" class="nav-link hover:text-blue-600 transition-colors">Data
@@ -276,23 +312,47 @@
                         Tambah Faskes
                     </a>
                 </div>
+
+                <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+                    class="lg:hidden p-2 rounded-xl hover:bg-slate-100 transition-colors" aria-label="Buka menu">
+                    <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <div id="mobile-menu" class="hidden lg:hidden pb-4 pt-3 border-t border-slate-100 space-y-1">
+                <a href="{{ route('homepage') }}"
+                    class="block px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:bg-slate-50">Beranda</a>
+                <a href="{{ route('peta') }}"
+                    class="block px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:bg-slate-50">Peta</a>
+                <a href="{{ route('faskes.index') }}"
+                    class="block px-3 py-2.5 rounded-xl text-sm text-slate-700 hover:bg-slate-50">Data Faskes</a>
+                <a href="{{ route('profil') }}"
+                    class="block px-3 py-2.5 rounded-xl text-sm font-semibold text-blue-600 bg-blue-50">Profil</a>
+                <a href="{{ route('faskes.create') }}"
+                    class="block px-3 py-2.5 rounded-xl text-sm font-semibold text-blue-600 hover:bg-blue-50">+ Tambah
+                    Faskes</a>
             </div>
         </div>
     </nav>
 
     {{-- ══ HERO — selaras dengan hero homepage ══ --}}
-    <section class="hero-gradient relative overflow-hidden py-20 md:py-28">
-        <div class="blob absolute -top-20 -left-20 w-80 h-80 bg-white"></div>
-        <div class="blob absolute bottom-0 right-0 w-96 h-96 bg-teal-400" style="animation-delay:3s"></div>
-        <div class="blob absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-sky-300"
+    <section class="hero-gradient relative overflow-hidden py-16 sm:py-20 lg:py-28">
+        <div class="blob absolute -top-20 -left-20 w-64 h-64 sm:w-80 sm:h-80 bg-white"></div>
+        <div class="blob absolute bottom-0 right-0 w-72 h-72 sm:w-96 sm:h-96 bg-teal-400" style="animation-delay:3s">
+        </div>
+        <div class="blob absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 sm:w-64 sm:h-64 bg-sky-300"
             style="animation-delay:1.5s"></div>
 
-        <div class="relative max-w-6xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center justify-center gap-14">
+        <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-8 sm:gap-10 lg:gap-14">
 
                 {{-- Avatar --}}
                 <div class="flex-shrink-0 reveal" style="animation-delay:0.1s;">
-                    <div class="avatar-ring w-52 h-52 md:w-64 md:h-64 float">
+                    <div
+                        class="avatar-ring w-40 h-40 min-[420px]:w-48 min-[420px]:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 float">
                         <div class="avatar-inner">
                             {{-- Ganti emoji dengan foto: <img src="foto.jpg" class="w-full h-full object-cover"/> --}}
                             {{-- <div class="text-center">
@@ -306,18 +366,18 @@
                 </div>
 
                 {{-- Bio --}}
-                <div class="text-center md:text-left max-w-xl">
+                <div class="text-center lg:text-left max-w-xl">
                     <div class="reveal" style="animation-delay:0.15s;">
                         <span
                             class="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white text-xs font-semibold tracking-wider uppercase backdrop-blur-sm border border-white/30 mb-4">
                             👨‍💻 Pengembang Aplikasi
                         </span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-3 drop-shadow-lg reveal"
+                    <h1 class="text-3xl min-[420px]:text-4xl md:text-5xl font-extrabold text-white leading-tight mb-3 drop-shadow-lg reveal"
                         style="animation-delay:0.2s;">
                         Imanuel Reformata<br>Hulu
                     </h1>
-                    <p class="text-blue-100 text-base md:text-lg font-medium mb-1 reveal"
+                    <p class="text-blue-100 text-sm sm:text-base md:text-lg font-medium mb-1 reveal"
                         style="animation-delay:0.25s;">
                         Mahasiswa Teknologi Rekayasa Perangkat Lunak
                     </p>
@@ -332,18 +392,18 @@
                         <span class="text-white font-semibold">Leaflet.js</span>
                         untuk membantu pemetaan layanan kesehatan Kota Sibolga.
                     </p>
-                    <div class="flex flex-wrap gap-3 justify-center md:justify-start reveal"
+                    <div class="flex flex-wrap gap-3 justify-center lg:justify-start reveal"
                         style="animation-delay:0.4s;">
                         <a href="{{ route('peta') }}"
-                            class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white text-blue-700 font-bold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
+                            class="w-full min-[420px]:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-white text-blue-700 font-bold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                             </svg>
                             Lihat Proyek
                         </a>
-                        <a href="mailto:[imanuelhulu01@gmail.com]"
-                            class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-teal-400/30 border border-teal-300/50 text-white font-semibold text-sm hover:bg-teal-400/50 transition-all">
+                        <a href="mailto:imanuelhulu01@gmail.com"
+                            class="w-full min-[420px]:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-teal-400/30 border border-teal-300/50 text-white font-semibold text-sm hover:bg-teal-400/50 transition-all">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -358,7 +418,7 @@
 
     {{-- ══ STAT CARDS — sama gaya dengan homepage ══ --}}
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-10">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-4">
             @php
                 $stats = [
                     ['icon' => '🏥', 'val' => '30+', 'label' => 'Data Faskes', 'color' => 'blue'],
@@ -374,7 +434,7 @@
                         class="w-11 h-11 rounded-xl bg-{{ $s['color'] }}-50 flex items-center justify-center mb-3 text-xl">
                         {{ $s['icon'] }}
                     </div>
-                    <p class="text-2xl font-extrabold text-slate-800">{{ $s['val'] }}</p>
+                    <p class="text-xl sm:text-2xl font-extrabold text-slate-800">{{ $s['val'] }}</p>
                     <p class="text-sm text-slate-500 mt-0.5">{{ $s['label'] }}</p>
                 </div>
             @endforeach
@@ -382,15 +442,15 @@
     </section>
 
     {{-- ══ TENTANG PROYEK ══ --}}
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
-        <div class="flex items-center justify-between mb-8 reveal">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 lg:mt-20">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-3 reveal">
             <div>
-                <h2 class="text-2xl font-extrabold text-slate-800">Tentang Proyek</h2>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800">Tentang Proyek</h2>
                 <p class="text-slate-500 text-sm mt-1">Sistem Informasi Geografis Persebaran Faskes Kota Sibolga</p>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             @php
                 $features = [
                     [
@@ -439,7 +499,7 @@
             @endphp
 
             @foreach ($features as $f)
-                <div class="hover-card bg-white rounded-2xl border border-slate-100 p-6 shadow-sm reveal"
+                <div class="hover-card bg-white rounded-2xl border border-slate-100 p-5 sm:p-6 shadow-sm reveal"
                     style="animation-delay:{{ $f['delay'] }}s;">
                     <div
                         class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center text-2xl mb-4 shadow-sm border border-slate-100">
@@ -453,10 +513,10 @@
     </section>
 
     {{-- ══ TECH STACK ══ --}}
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
-        <div class="flex items-center justify-between mb-8 reveal">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 lg:mt-20">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-3 reveal">
             <div>
-                <h2 class="text-2xl font-extrabold text-slate-800">Tech Stack</h2>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800">Tech Stack</h2>
                 <p class="text-slate-500 text-sm mt-1">Teknologi yang digunakan dalam proyek ini</p>
             </div>
         </div>
@@ -497,7 +557,7 @@
         @endphp
 
         {{-- Grid 2 kolom: kiri pills, kanan cards detail --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
 
             {{-- Kolom KIRI: kategori + pill badges --}}
             <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 reveal space-y-6">
@@ -524,7 +584,7 @@
             </div>
 
             {{-- Kolom KANAN: cards detail tiap teknologi --}}
-            <div class="grid grid-cols-2 gap-3 reveal" style="animation-delay:0.15s;">
+            <div class="grid grid-cols-1 min-[420px]:grid-cols-2 gap-3 reveal" style="animation-delay:0.15s;">
                 @foreach ($stacks as $stack)
                     @foreach ($stack['techs'] as $t)
                         <div
@@ -546,8 +606,8 @@
     </section>
 
     {{-- ══ SKILLS ══ --}}
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 lg:mt-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8">
 
             {{-- Skill bars --}}
             <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 reveal">
@@ -641,15 +701,15 @@
     </section>
 
     {{-- ══ KONTAK ══ --}}
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 mb-20">
-        <div class="flex items-center justify-between mb-8 reveal">
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16 lg:mt-20 mb-14 sm:mb-20">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-3 reveal">
             <div>
-                <h2 class="text-2xl font-extrabold text-slate-800">Kontak</h2>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-800">Kontak</h2>
                 <p class="text-slate-500 text-sm mt-1">Punya pertanyaan? Jangan ragu untuk menghubungi</p>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
             @php
                 $contacts = [
                     [
@@ -678,7 +738,7 @@
 
             @foreach ($contacts as $i => $c)
                 <a href="{{ $c['href'] }}" target="_blank"
-                    class="hover-card bg-white rounded-2xl border border-slate-100 p-6 shadow-sm block group reveal"
+                    class="hover-card bg-white rounded-2xl border border-slate-100 p-5 sm:p-6 shadow-sm block group reveal"
                     style="animation-delay:{{ 0.1 * $i }}s;">
                     <div class="flex items-start gap-4">
                         <div
@@ -688,7 +748,7 @@
                         <div class="flex-1 min-w-0">
                             <p class="text-xs font-extrabold text-slate-400 uppercase tracking-wider mb-1">
                                 {{ $c['label'] }}</p>
-                            <p class="text-sm font-bold text-slate-800 truncate">{{ $c['val'] }}</p>
+                            <p class="text-sm font-bold text-slate-800 break-words">{{ $c['val'] }}</p>
                             <p class="text-xs text-blue-500 font-semibold mt-2 group-hover:underline">
                                 {{ $c['hint'] }} →</p>
                         </div>
@@ -700,7 +760,7 @@
 
     {{-- ══ FOOTER (sama dengan homepage) ══ --}}
     <footer class="bg-slate-800 text-slate-400 text-sm py-10">
-        <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-start justify-between gap-8 mb-8">
                 <div>
                     <a href="{{ route('homepage') }}" class="flex items-center gap-2 mb-3">
@@ -718,7 +778,7 @@
                         Sistem Informasi Geografis Fasilitas Kesehatan Kota Sibolga, Sumatra Utara.
                     </p>
                 </div>
-                <div class="grid grid-cols-2 gap-x-12 gap-y-2 text-xs">
+                <div class="grid grid-cols-1 min-[420px]:grid-cols-2 gap-x-12 gap-y-6 text-xs w-full md:w-auto">
                     <div>
                         <p class="text-slate-300 font-bold mb-2 uppercase tracking-wider text-xs">Navigasi</p>
                         <div class="space-y-1.5">
@@ -745,7 +805,8 @@
                     </div>
                 </div>
             </div>
-            <div class="border-t border-slate-700 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div
+                class="border-t border-slate-700 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
                 <p class="text-xs">© {{ date('Y') }} Sistem Informasi Fasilitas Kesehatan — Kota Sibolga</p>
                 <p class="text-xs text-slate-500">Dibuat oleh <span class="text-white font-semibold">Imanuel Reformata
                         Hulu</span> · Tugas Akhir Query PostgreSQL TRPL</p>
